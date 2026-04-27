@@ -87,24 +87,6 @@ export function VinylSlider() {
 
   return (
     <div className="relative w-full flex justify-center items-center h-48 md:h-56 mb-8 perspective-1000">
-      {/* Vinyl record behind the albums */}
-      <div className="absolute w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl"
-        style={{
-          transform: 'translateX(20px)',
-          zIndex: 5,
-        }}
-      >
-        {/* Vinyl grooves */}
-        <div className="absolute inset-2 rounded-full border border-gray-700/50" />
-        <div className="absolute inset-4 rounded-full border border-gray-700/30" />
-        <div className="absolute inset-6 rounded-full border border-gray-700/30" />
-        <div className="absolute inset-8 rounded-full border border-gray-700/30" />
-        {/* Center label */}
-        <div className="absolute inset-0 m-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center">
-          <div className="w-2 h-2 rounded-full bg-gray-900" />
-        </div>
-      </div>
-
       {/* Album stack */}
       <div className="relative w-36 h-36 md:w-44 md:h-44" style={{ transformStyle: 'preserve-3d' }}>
         {albums.map((album, index) => {
