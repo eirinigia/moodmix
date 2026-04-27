@@ -47,15 +47,15 @@ export function VinylSlider() {
     const diff = index - activeIndex;
     const normalizedDiff = ((diff % albums.length) + albums.length) % albums.length;
     
-    // Stack positions: 0 = front, 1 = behind right, 2 = behind further, 3 = hidden left
+    // Stack positions: 0 = front (fully visible), others hidden behind
     if (normalizedDiff === 0) {
-      // Front card - currently active
+      // Front card - currently active, fully visible
       return {
         zIndex: 40,
         transform: isFlipping 
           ? 'translateX(-120%) rotateY(-25deg) scale(0.85)' 
           : 'translateX(0) rotateY(0deg) scale(1)',
-        opacity: isFlipping ? 0.6 : 1,
+        opacity: isFlipping ? 0 : 1,
       };
     } else if (normalizedDiff === 1) {
       // Next card - moves to front when flipping
@@ -63,23 +63,14 @@ export function VinylSlider() {
         zIndex: 30,
         transform: isFlipping
           ? 'translateX(0) rotateY(0deg) scale(1)'
-          : 'translateX(15%) rotateY(8deg) scale(0.9)',
-        opacity: isFlipping ? 1 : 0.7,
-      };
-    } else if (normalizedDiff === 2) {
-      // Third card
-      return {
-        zIndex: 20,
-        transform: isFlipping
-          ? 'translateX(15%) rotateY(8deg) scale(0.9)'
-          : 'translateX(28%) rotateY(12deg) scale(0.8)',
-        opacity: isFlipping ? 0.7 : 0.5,
+          : 'translateX(8px) scale(0.95)',
+        opacity: isFlipping ? 1 : 0,
       };
     } else {
-      // Hidden cards waiting on the left
+      // All other cards hidden
       return {
         zIndex: 10,
-        transform: 'translateX(-100%) rotateY(-20deg) scale(0.7)',
+        transform: 'translateX(8px) scale(0.9)',
         opacity: 0,
       };
     }
