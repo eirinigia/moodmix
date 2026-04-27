@@ -47,30 +47,48 @@ export function VinylSlider() {
     const diff = index - activeIndex;
     const normalizedDiff = ((diff % albums.length) + albums.length) % albums.length;
     
-    // Stack positions: 0 = front (fully visible), others hidden behind
+    // Stack positions: 0 = front, 1 = behind right, 2 = behind further, 3 = hidden left
     if (normalizedDiff === 0) {
-      // Front card - currently active, fully visible
+      // Front card - currently active, fully opaque
       return {
         zIndex: 40,
         transform: isFlipping 
           ? 'translateX(-120%) rotateY(-25deg) scale(0.85)' 
           : 'translateX(0) rotateY(0deg) scale(1)',
-        opacity: isFlipping ? 0 : 1,
+        opacity: 1,
       };
     } else if (normalizedDiff === 1) {
-      // Next card - moves to front when flipping
+      // Second card - visible behind, slightly offset
       return {
         zIndex: 30,
         transform: isFlipping
           ? 'translateX(0) rotateY(0deg) scale(1)'
-          : 'translateX(8px) scale(0.95)',
-        opacity: isFlipping ? 1 : 0,
+          : 'translateX(18px) rotateY(8deg) scale(0.92)',
+        opacity: 1,
       };
-    } else {
-      // All other cards hidden
+    } else if (normalizedDiff === 2) {
+      // Third card - visible further behind
+      return {
+        zIndex: 20,
+        transform: isFlipping
+          ? 'translateX(18px) rotateY(8deg) scale(0.92)'
+          : 'translateX(34px) rotateY(14deg) scale(0.84)',
+        opacity: 1,
+      };
+    } else if (normalizedDiff === 3) {
+      // Fourth card - barely visible at the back
       return {
         zIndex: 10,
-        transform: 'translateX(8px) scale(0.9)',
+        transform: isFlipping
+          ? 'translateX(34px) rotateY(14deg) scale(0.84)'
+          : 'translateX(48px) rotateY(18deg) scale(0.76)',
+        opacity: 1,
+      };
+    } else {
+      // Hidden cards coming from left
+      return {
+        zIndex: 5,
+        transform: 'translateX(-100%) rotateY(-20deg) scale(0.7)',
         opacity: 0,
       };
     }
