@@ -1,5 +1,7 @@
 'use client';
 
+import { VinylSlider } from './VinylSlider';
+
 interface MoodInputCardProps {
   mood: string;
   onMoodChange: (value: string) => void;
@@ -23,6 +25,9 @@ export function MoodInputCard({
 
   return (
     <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 md:p-8">
+      {/* Vinyl Album Slider */}
+      <VinylSlider />
+
       {/* Label */}
       <label htmlFor="mood-input" className="block text-white font-semibold text-lg mb-3">
         How are you feeling?

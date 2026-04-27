@@ -52,3 +52,8 @@ body {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* 3D perspective for vinyl slider */
+.perspective-1000 {
+  perspective: 1000px;
+}
