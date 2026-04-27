@@ -47,48 +47,48 @@ export function VinylSlider() {
     const diff = index - activeIndex;
     const normalizedDiff = ((diff % albums.length) + albums.length) % albums.length;
     
-    // Stack positions: 0 = front, 1 = behind right, 2 = behind further, 3 = hidden left
+    // Stack positions: front album fully visible, others peek out from behind like real vinyl stack
     if (normalizedDiff === 0) {
-      // Front card - currently active, fully opaque
+      // Front card - currently active, fully visible
       return {
         zIndex: 40,
         transform: isFlipping 
-          ? 'translateX(-120%) rotateY(-25deg) scale(0.85)' 
-          : 'translateX(0) rotateY(0deg) scale(1)',
-        opacity: 1,
+          ? 'translateX(-150%) rotateY(-15deg)' 
+          : 'translateX(0) translateY(0)',
+        opacity: isFlipping ? 0 : 1,
       };
     } else if (normalizedDiff === 1) {
-      // Second card - visible behind, slightly offset
+      // Second card - peeks out from bottom-right
       return {
         zIndex: 30,
         transform: isFlipping
-          ? 'translateX(0) rotateY(0deg) scale(1)'
-          : 'translateX(18px) rotateY(8deg) scale(0.92)',
+          ? 'translateX(0) translateY(0)'
+          : 'translateX(12px) translateY(12px)',
         opacity: 1,
       };
     } else if (normalizedDiff === 2) {
-      // Third card - visible further behind
+      // Third card - peeks out further
       return {
         zIndex: 20,
         transform: isFlipping
-          ? 'translateX(18px) rotateY(8deg) scale(0.92)'
-          : 'translateX(34px) rotateY(14deg) scale(0.84)',
+          ? 'translateX(12px) translateY(12px)'
+          : 'translateX(24px) translateY(24px)',
         opacity: 1,
       };
     } else if (normalizedDiff === 3) {
-      // Fourth card - barely visible at the back
+      // Fourth card - peeks out even further
       return {
         zIndex: 10,
         transform: isFlipping
-          ? 'translateX(34px) rotateY(14deg) scale(0.84)'
-          : 'translateX(48px) rotateY(18deg) scale(0.76)',
+          ? 'translateX(24px) translateY(24px)'
+          : 'translateX(36px) translateY(36px)',
         opacity: 1,
       };
     } else {
-      // Hidden cards coming from left
+      // Hidden cards
       return {
         zIndex: 5,
-        transform: 'translateX(-100%) rotateY(-20deg) scale(0.7)',
+        transform: 'translateX(-150%) rotateY(-15deg)',
         opacity: 0,
       };
     }
@@ -96,18 +96,19 @@ export function VinylSlider() {
 
   return (
     <div className="relative w-full flex justify-center items-center h-48 md:h-56 mb-8 perspective-1000">
-      {/* Album stack */}
-      <div className="relative w-36 h-36 md:w-44 md:h-44" style={{ transformStyle: 'preserve-3d' }}>
-        {albums.map((album, index) => {
-          const style = getCardStyle(index);
+      {/* Album stack - render in reverse order so first is on top */}
+      <div className="relative w-36 h-36 md:w-44 md:h-44">
+        {[...albums].reverse().map((album) => {
+          const originalIndex = albums.findIndex(a => a.id === album.id);
+          const style = getCardStyle(originalIndex);
           return (
             <div
               key={album.id}
-              className="absolute inset-0 rounded-lg overflow-hidden shadow-2xl transition-all duration-500 ease-out"
+              className="absolute inset-0 rounded-lg overflow-hidden shadow-2xl transition-all duration-500 ease-out bg-black"
               style={{
-                ...style,
-                transformStyle: 'preserve-3d',
-                backfaceVisibility: 'hidden',
+                zIndex: style.zIndex,
+                transform: style.transform,
+                opacity: style.opacity,
               }}
             >
               <Image
@@ -116,12 +117,11 @@ export function VinylSlider() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 144px, 176px"
+                priority
               />
-              {/* Glossy reflection overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
               {/* Edge shadow for depth */}
-              <div className="absolute inset-0 shadow-inner pointer-events-none" 
-                style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.3)' }} 
+              <div className="absolute inset-0 pointer-events-none" 
+                style={{ boxShadow: 'inset 0 0 15px rgba(0,0,0,0.4)' }} 
               />
             </div>
           );
