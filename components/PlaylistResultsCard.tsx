@@ -108,22 +108,6 @@ export function PlaylistResultsCard({ playlist, onStartOver }: PlaylistResultsCa
 
       {/* Track List */}
       <div className="mt-4 max-h-80 overflow-y-auto scrollbar-thin">
-        <style jsx>{`
-          .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
-          }
-          .scrollbar-thin::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-          }
-          .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 3px;
-          }
-          .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.25);
-          }
-        `}</style>
         {playlist.tracks.map((track, index) => (
           <div
             key={track.id}
